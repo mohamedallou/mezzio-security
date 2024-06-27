@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        columns="120"
+        colors="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
+        bootstrap="phpunit-bootstrap.php"
+        executionOrder="depends,defects"
+        beStrictAboutChangesToGlobalState="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        failOnEmptyTestSuite="true"
+        failOnIncomplete="true"
+        failOnNotice="true"
+        failOnRisky="true"
+        failOnWarning="true"
+        cacheDirectory=".phpunit.cache"
+>
+  <coverage/>
+  <php>
+    <ini name="memory_limit" value="1G" />
+  </php>
+  <testsuites>
+    <testsuite name="unittests">
+      <directory>./test/Unit</directory>
+    </testsuite>
+    <testsuite name="integrationtests">
+      <directory>./test/Integration</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">./src/</directory>
+    </include>
+  </source>
+</phpunit>

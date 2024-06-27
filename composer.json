@@ -1,2 +1,53 @@
 {
+  "name": "mohamedallou/mezzio-security",
+  "description": "A set of middlewares and services to offer basic user authentication capabilities",
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">= 8.1",
+    "symfony/console": "^7.0",
+    "doctrine/orm": "^2.14",
+    "firebase/php-jwt": "^6.8",
+    "mezzio/mezzio-session": "^1.14",
+    "mezzio/mezzio-session-ext": "^1.19",
+    "laminas/laminas-eventmanager": "^3.13",
+    "mezzio/mezzio-authentication": "^1.9",
+    "mezzio/mezzio-authentication-session": "^1.9",
+    "mezzio/mezzio-problem-details": "^1.14",
+    "mezzio/mezzio-authentication-basic": "^1.8",
+    "laminas/laminas-inputfilter": "^2.30",
+    "psr/http-server-handler": "^1.0",
+    "psr/container": "^2.0 || ^1.0",
+    "laminas/laminas-servicemanager": "^3.22",
+    "laminas/laminas-hydrator": "^4.15",
+    "symfony/cache": "^7.1",
+    "laminas/laminas-diactoros": "^3.3",
+    "nesbot/carbon": "^3.6",
+    "mezzio/mezzio-template": "^2.10",
+    "laminas/laminas-stratigility": "^3.11",
+    "mezzio/mezzio": "^3.19",
+    "mezzio/mezzio-helpers": "^5.16",
+    "mezzio/mezzio-authorization": "^1.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "MezzioSecurity\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MezzioSecurity\\Test\\": "test/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.2",
+    "laminas/laminas-config-aggregator": "^1.15",
+    "phpstan/phpstan": "^1.11",
+    "mezzio/mezzio-laminasviewrenderer": "^2.15",
+    "mezzio/mezzio-fastroute": "^3.11"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "vendor/bin/phpstan analyse  -l 8 src test"
+  }
 }
