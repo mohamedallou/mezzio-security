@@ -33,10 +33,11 @@ This library requires an implementation of the ***Doctrine\ORM\EntityManagerInte
 
 ## Adding Translation to the Problemdetails listener
 
-## Coming feature:
+## Coming features:
  - Support session and basic authentication simultaneously
  - Support Translation of validation messages
  - add JWT Token Auth and blacklist
  - add IP Restriction
+ - Add IP Logging
  - block user after x failed login attempts
  - Add Openapi annotations
