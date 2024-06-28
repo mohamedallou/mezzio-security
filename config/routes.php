@@ -18,19 +18,31 @@ return [
     ],
     'security.get_user' => [
         'path'            => '/api/security/user[/{id}]',
-        'middleware'      => [GetUser::class],
+        'middleware'      => [
+            \Mezzio\Authentication\AuthenticationMiddleware::class,
+            \Mezzio\Authorization\AuthorizationMiddleware::class,
+            GetUser::class
+        ],
         'allowed_methods' => ['GET'],
         'name'            => 'security.get_user',
     ],
     'security.update_user' => [
         'path'            => '/api/security/user/{id}[/]',
-        'middleware'      => [UpdateUser::class],
+        'middleware'      => [
+            \Mezzio\Authentication\AuthenticationMiddleware::class,
+            \Mezzio\Authorization\AuthorizationMiddleware::class,
+            UpdateUser::class
+        ],
         'allowed_methods' => ['PATCH'],
         'name'            => 'security.update_user',
     ],
     'security.delete_user' => [
         'path'            => '/api/security/user/{id}[/]',
-        'middleware'      => [UpdateUser::class],
+        'middleware'      => [
+            \Mezzio\Authentication\AuthenticationMiddleware::class,
+            \Mezzio\Authorization\AuthorizationMiddleware::class,
+            \MezzioSecurity\RequestHandler\DeleteUser::class
+        ],
         'allowed_methods' => ['DELETE'],
         'name'            => 'security.delete_user',
     ],
@@ -46,6 +58,8 @@ return [
     'security.add_user_permissions' => [
         'path'            => '/api/security/user/{id}/permissions[/]',
         'middleware'      => [
+            \Mezzio\Authentication\AuthenticationMiddleware::class,
+            \Mezzio\Authorization\AuthorizationMiddleware::class,
             AssignUserPermission::class
         ],
         'allowed_methods' => ['PUT'],
