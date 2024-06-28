@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MezzioSecurity\Test\Unit\Authorization;
+namespace MezzioSecurity\Test\Unit\Authorization\Fake;
 
 use Mezzio\Authentication\UserInterface;
 use MezzioSecurity\Service\Authorization\OwnerShipAssertionInterface;

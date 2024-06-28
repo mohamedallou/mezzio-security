@@ -86,7 +86,7 @@ class TestUserManager extends TestCase
         $userManager = $this->container->get(UserManager::class);
         $user = $userManager->authenticate(self::USERNAME, self::PWD);
 
-        self::assertEquals(self::USERNAME, $user->getIdentity());
+        self::assertEquals(self::USERNAME, $user?->getIdentity() ?? '');
     }
 
     public function testAssignPermissions(): void

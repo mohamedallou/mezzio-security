@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MezzioSecurity\Test\Unit\Authorization;
 
+use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Authentication\DefaultUser;
 use Mezzio\Authentication\UserInterface;
@@ -14,8 +15,12 @@ use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
 use MezzioSecurity\Service\Authorization\AuthorizationService;
 use MezzioSecurity\Service\Authorization\OwnerShipAssertionInterface;
+use MezzioSecurity\Test\Unit\Authorization\Fake\OwnershipAssertionFake;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class AuthorizationServiceTest extends TestCase
 {
@@ -76,9 +81,11 @@ class AuthorizationServiceTest extends TestCase
         );
         $route = new Route(
             '/api/ping',
-            $middlewareFactory->prepare(function (ServerRequest $request) {
-                return true;
-            }),
+            $middlewareFactory->prepare(
+                function (ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
+                    return new JsonResponse([]);
+                }
+            ),
             ['GET', 'POST'],
             'ping'
         );

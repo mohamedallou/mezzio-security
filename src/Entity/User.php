@@ -67,6 +67,9 @@ class User implements \JsonSerializable, UserInterface
     #[Column(name: "user_admin", type: "boolean", nullable: false)]
     protected bool $admin = false;
 
+    /**
+     * @var string[]
+     */
     #[Column(name: "user_permissions", type: "simple_array", nullable: true)]
     protected array $permissions = [];
 
@@ -347,7 +350,10 @@ class User implements \JsonSerializable, UserInterface
         $this->lastAccessIpAddress = $lastAccessIpAddress;
     }
 
-    public function jsonSerialize(): mixed
+    /**
+     * @return array<string,mixed>
+     */
+    public function jsonSerialize(): array
     {
         return $this->getDetails();
     }
@@ -382,6 +388,9 @@ class User implements \JsonSerializable, UserInterface
         return $this;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getDetails(): array
     {
         return [

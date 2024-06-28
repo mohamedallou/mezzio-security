@@ -13,7 +13,7 @@ class UserDto
     public ?string $lastName = null;
 
     /**
-     * @return array{email: string, username: string, password:string}
+     * @return array{email: ?string, username: ?string, password: ?string, first_name: ?string, last_name: ?string}
      */
     public function getArrayCopy(): array
     {
@@ -26,6 +26,10 @@ class UserDto
         ];
     }
 
+    /**
+     * @param array{username: ?string, password: ?string, email: ?string, first_name: ?string, last_name: ?string} $data
+     * @return void
+     */
     public function exchangeArray(array $data): void
     {
         $this->username = $data['username'];

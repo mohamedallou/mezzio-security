@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Hydrator\ExtractionInterface;
 use Laminas\Hydrator\HydrationInterface;
+use Laminas\InputFilter\InputFilterInterface;
 use Laminas\InputFilter\InputFilterPluginManager;
 use Mezzio\Authentication\DefaultUser;
 use Mezzio\Authentication\UserInterface;
@@ -22,8 +23,12 @@ use MezzioSecurity\Repository\UserRepositoryInterface;
 
 class UserManager implements MezzioUserRepoInterface
 {
-    private const DOI_LINK = '/api/security_doi/';
-
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param EventManagerInterface $eventManager
+     * @param InputFilterPluginManager<InputFilterInterface<array<string, mixed>>> $inputFilterPluginManager
+     * @param ExtractionInterface&HydrationInterface $hydrator
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly EventManagerInterface  $eventManager,
@@ -44,6 +49,10 @@ class UserManager implements MezzioUserRepoInterface
     {
         $data = $this->hydrator->extract($dto);
         $inputFilter = $this->inputFilterPluginManager->get(UserDto::class. '_register');
+        if (!$inputFilter instanceof InputFilterInterface) {
+            throw new \RuntimeException('No input filter was found');
+        }
+
         $inputFilter->setValidationGroup(['email', 'username', 'password']);
         $inputFilter->setData($data);
         if (!$inputFilter->isValid()) {
@@ -66,7 +75,7 @@ class UserManager implements MezzioUserRepoInterface
     }
 
     /**
-     * @param array<string,mixed|null> $userData
+     * @param UserDto $dto
      * @param int $userId
      * @return User
      */
@@ -87,6 +96,11 @@ class UserManager implements MezzioUserRepoInterface
             fn ($el): bool => $el !== null
         );
         $inputFilter = $this->inputFilterPluginManager->get(UserDto::class);
+
+        if (!$inputFilter instanceof InputFilterInterface) {
+            throw new \RuntimeException('No input filter was found');
+        }
+
         $inputFilter->setData($data);
 
         if (!$inputFilter->isValid()) {
@@ -114,10 +128,11 @@ class UserManager implements MezzioUserRepoInterface
         // try username
         /** @var User|null $user */
         $user = $userRepo->findOneBy(['username' => $credential]);
-        $userRepo->refreshAccessTimeForUser($user);
         if ($user === null) {
             return null;
         }
+
+        $userRepo->refreshAccessTimeForUser($user);
 
         if ($password === null) {
             //todo: implement jwt token authentication (api token)
@@ -161,6 +176,11 @@ class UserManager implements MezzioUserRepoInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * @param int $userId
+     * @param string[] $permissions
+     * @return void
+     */
     public function assignPermissions(int $userId, array $permissions): void
     {
         /** @var User|null $user */

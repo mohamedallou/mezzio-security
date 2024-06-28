@@ -34,6 +34,9 @@ use MezzioSecurity\Session\SessionHandler;
 // TODO: Block user after 5 failed login attempts
 class ConfigProvider
 {
+    /**
+     * @return array<string,mixed>
+     */
     public function __invoke(): array
     {
         return [
@@ -105,6 +108,9 @@ class ConfigProvider
         ];
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getInputFilters() : array
     {
         return require dirname(__FILE__, 2) . '/config/input_filters.php';

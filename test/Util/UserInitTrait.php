@@ -10,7 +10,7 @@ use MezzioSecurity\Service\UserManager;
 
 trait UserInitTrait
 {
-    public function insertNewUser($username, $mail, $password): User
+    public function insertNewUser(string $username, string $mail, string $password): User
     {
         $userDto = new UserDto();
         $userDto->username = $username; // min 5 characters
@@ -20,7 +20,6 @@ trait UserInitTrait
         /** @var UserManager $userManager */
         $userManager = $this->container->get(UserManager::class);
 
-        $user = $userManager->registerNewUser($userDto);
-        return $user;
+        return $userManager->registerNewUser($userDto);
     }
 }

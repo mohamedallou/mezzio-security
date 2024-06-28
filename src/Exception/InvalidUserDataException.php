@@ -11,6 +11,10 @@ class InvalidUserDataException extends \InvalidArgumentException implements Prob
 {
     use CommonProblemDetailsExceptionTrait;
 
+    /**
+     * @param string $message
+     * @param array<array-key, mixed> $errors
+     */
     public function __construct(string $message = "", array $errors = [])
     {
         $this->status = 400;

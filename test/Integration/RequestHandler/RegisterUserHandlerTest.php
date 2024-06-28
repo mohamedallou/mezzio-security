@@ -25,10 +25,6 @@ class RegisterUserHandlerTest extends TestCase
     private const EMAIL = 'test@mail.com';
     private const PWD = 'pwd12345678';
 
-    private const USERNAME_2 = 'test12345';
-    private const EMAIL_2 = 'test2@mail.com';
-    private const PWD_2 = 'pwd123456789';
-
     private ServiceManager $container;
 
     protected function setUp(): void

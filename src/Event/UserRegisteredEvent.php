@@ -7,6 +7,11 @@ namespace MezzioSecurity\Event;
 use Laminas\EventManager\Event;
 use MezzioSecurity\Entity\User;
 
+/**
+ * UserRegisteredEvent
+ * @extends Event<User, array<string,mixed>>
+ * @author mohamed.allouche
+ */
 class UserRegisteredEvent extends Event
 {
     public function __construct(User $user)

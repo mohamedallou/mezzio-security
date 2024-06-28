@@ -10,6 +10,10 @@ use Psr\Http\Message\StreamInterface;
 
 trait MockStreamTrait
 {
+    /**
+     * @param array<string|int,mixed> $data
+     * @return StreamInterface
+     */
     private function createStream(array $data): StreamInterface
     {
         $stream = fopen('php://memory', 'r+');

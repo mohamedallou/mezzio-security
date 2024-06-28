@@ -30,6 +30,11 @@ class AuthorizationService implements AuthorizationInterface
     {
         /** @var UserInterface|null $user */
         $user = $request->getAttribute(UserInterface::class);
+
+        if ($user === null) {
+            return false;
+        }
+
         $isAdmin = $user->getDetail('admin');
 
         if ($isAdmin) {
@@ -67,6 +72,7 @@ class AuthorizationService implements AuthorizationInterface
                 throw new \RuntimeException('The ownership assertion class must implement OwnerShipAssertionInterface');
             }
 
+            /** @var string $ownershipAssertionClass */
             /** @var OwnerShipAssertionInterface $ownershipAssertionInstance */
             $ownershipAssertionInstance = $this->container->get($ownershipAssertionClass);
             return $ownershipAssertionInstance->isOwner($user, $request);
