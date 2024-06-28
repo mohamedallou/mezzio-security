@@ -6,7 +6,7 @@
   "require": {
     "php": ">= 8.1",
     "symfony/console": "^7.0",
-    "doctrine/orm": "^2.14",
+    "doctrine/orm": "^3",
     "firebase/php-jwt": "^6.8",
     "mezzio/mezzio-session": "^1.14",
     "mezzio/mezzio-session-ext": "^1.19",

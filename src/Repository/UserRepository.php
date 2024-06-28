@@ -16,8 +16,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function refreshAccessTimeForUser(UserInterface $user): void
     {
         $user->refreshAccessTime();
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
     public function activateUserByToken(string $doiToken): void
@@ -30,7 +30,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         }
 
         $userEntity->activate();
-        $this->_em->persist($userEntity);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($userEntity);
+        $this->getEntityManager()->flush();
     }
 }
