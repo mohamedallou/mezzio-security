@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use Mezzio\Authentication\AuthenticationMiddleware;
 use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use MezzioSecurity\RequestHandler\GetUser;
 use MezzioSecurity\RequestHandler\LoginUser;
 use MezzioSecurity\RequestHandler\Permissions\AssignUserPermission;
 use MezzioSecurity\RequestHandler\RegisterUser;
 use MezzioSecurity\RequestHandler\UpdateUser;
+use MezzioSecurity\RequestHandler\UserDetails;
 
 return [
     'security.register_user' => [
@@ -16,8 +18,17 @@ return [
         'allowed_methods' => ['POST'],
         'name'            => 'security.register_user',
     ],
+    'security.userdetails' => [
+        'path' => '/api/security/user/details[/]',
+        'middleware' => [
+            AuthenticationMiddleware::class,
+            UserDetails::class
+        ],
+        'allowed_methods' => ['GET'],
+        'name' => 'security.userdetails',
+    ],
     'security.get_user' => [
-        'path'            => '/api/security/user[/{id}]',
+        'path'            => '/api/security/user[/{id:\d+}]',
         'middleware'      => [
             \Mezzio\Authentication\AuthenticationMiddleware::class,
             \Mezzio\Authorization\AuthorizationMiddleware::class,
@@ -27,7 +38,7 @@ return [
         'name'            => 'security.get_user',
     ],
     'security.update_user' => [
-        'path'            => '/api/security/user/{id}[/]',
+        'path'            => '/api/security/user/{id:\d+}[/]',
         'middleware'      => [
             \Mezzio\Authentication\AuthenticationMiddleware::class,
             \Mezzio\Authorization\AuthorizationMiddleware::class,
@@ -37,7 +48,7 @@ return [
         'name'            => 'security.update_user',
     ],
     'security.delete_user' => [
-        'path'            => '/api/security/user/{id}[/]',
+        'path'            => '/api/security/user/{id:\d+}[/]',
         'middleware'      => [
             \Mezzio\Authentication\AuthenticationMiddleware::class,
             \Mezzio\Authorization\AuthorizationMiddleware::class,
@@ -55,8 +66,17 @@ return [
         'allowed_methods' => ['POST'],
         'name'            => 'security.login_user',
     ],
+    'login' => [
+        'path'            => '/login[/]',
+        'middleware'      => [
+            BodyParamsMiddleware::class,
+            \MezzioSecurity\RequestHandler\View\Login::class
+        ],
+        'allowed_methods' => ['POST', 'GET'],
+        'name'            => 'login',
+    ],
     'security.add_user_permissions' => [
-        'path'            => '/api/security/user/{id}/permissions[/]',
+        'path'            => '/api/security/user/{id:\d+}/permissions[/]',
         'middleware'      => [
             \Mezzio\Authentication\AuthenticationMiddleware::class,
             \Mezzio\Authorization\AuthorizationMiddleware::class,

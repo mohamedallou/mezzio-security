@@ -66,7 +66,7 @@ class LoginUserTest extends TestCase
         $response = $handler->handle($request);
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
-            '{"success": true, "redirect": "/"}',
+            '{"username":"test1234","permissions":[],"details":{"id":1,"email":"test@mail.com","username":"test1234","admin":false,"firstName":null,"lastName":null,"permissions":[],"created":"2000-01-01 00:00:00","updated":"2000-01-01 00:00:00"},"admin":false}',
             $response->getBody()->getContents()
         );
         self::assertTrue($session->has(UserInterface::class));

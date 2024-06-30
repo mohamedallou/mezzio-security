@@ -143,7 +143,12 @@ class UserManager implements MezzioUserRepoInterface
             return null;
         }
 
-        return new DefaultUser($user->getUsername(), $user->getPermissions(), $user->getDetails());
+        $permissions = $user->getPermissions();
+        if ($user->isAdmin()) {
+            $permissions[] = 'admin';
+        }
+
+        return new DefaultUser($user->getUsername(), $permissions, $user->getDetails());
     }
 
     public function activateUserWithDoubleOptIn(string $doiToken): void

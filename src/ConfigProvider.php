@@ -12,6 +12,8 @@ use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Session\PhpSession;
 use Mezzio\Authentication\UserRepositoryInterface;
 use Mezzio\Authorization\AuthorizationInterface;
+use Mezzio\Session\Ext\PhpSessionPersistence;
+use Mezzio\Session\SessionPersistenceInterface;
 use MezzioSecurity\Middleware\BasicAuthenticationMiddleware;
 use MezzioSecurity\Middleware\Factory\BasicAuthenticationMiddlewareFactory;
 use MezzioSecurity\RequestHandler\DeleteUser;
@@ -23,11 +25,14 @@ use MezzioSecurity\RequestHandler\Permissions\AssignUserPermission;
 use MezzioSecurity\RequestHandler\RegisterUser;
 use MezzioSecurity\RequestHandler\UpdateUser;
 use MezzioSecurity\RequestHandler\View\Login;
+use MezzioSecurity\Service\Authentication\CustomPhpSession;
 use MezzioSecurity\Service\Authorization\AuthorizationService;
 use MezzioSecurity\Service\Factory\UserManagerFactory;
 use MezzioSecurity\Service\UserManager;
 use MezzioSecurity\Session\Factory\SessionHandlerFactory;
 use MezzioSecurity\Session\SessionHandler;
+use MezzioSecurity\Session\SessionPersistence\CustomSessionPersistence;
+use Psr\Container\ContainerInterface;
 
 // TODO: add JWT Token Auth and blacklist
 // TODO: add IP Restriction
@@ -75,6 +80,12 @@ class ConfigProvider
                 ],
                 AssignUserPermission::class => [
                     UserManager::class,
+                ],
+                CustomPhpSession::class => [
+                    PhpSession::class,
+                ],
+                CustomSessionPersistence::class => [
+                    PhpSessionPersistence::class,
                 ]
             ]
         ];
@@ -96,11 +107,16 @@ class ConfigProvider
                 Login::class => LoginFactory::class,
                 BasicAuthenticationMiddleware::class => BasicAuthenticationMiddlewareFactory::class,
                 LoginUser::class => LoginUserFactory::class,
+                AuthorizationService::class => function (ContainerInterface $container): AuthorizationService {
+                    return new AuthorizationService($container);
+                },
+                CustomSessionPersistence::class => InvokableFactory::class,
             ],
             'aliases'  => [
-                AuthenticationInterface::class => PhpSession::class,
+                AuthenticationInterface::class => CustomPhpSession::class,
                 UserRepositoryInterface::class => UserManager::class,
                 AuthorizationInterface::class => AuthorizationService::class,
+                SessionPersistenceInterface::class => CustomSessionPersistence::class,
             ],
             'abstract_factories' => [
                 ConfigAbstractFactory::class,

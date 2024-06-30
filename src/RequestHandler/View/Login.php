@@ -8,7 +8,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\Uri;
-use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Session\RetrieveSession;
 use Mezzio\Session\SessionInterface;
@@ -23,7 +23,7 @@ class Login implements RequestHandlerInterface
 
     public function __construct(
         private readonly TemplateRendererInterface $renderer,
-        private readonly PhpSession $adapter
+        private readonly AuthenticationInterface $adapter
     ) {
     }
 

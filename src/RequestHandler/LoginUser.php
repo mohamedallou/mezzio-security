@@ -7,6 +7,7 @@ namespace MezzioSecurity\RequestHandler;
 use Fig\Http\Message\StatusCodeInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Uri;
+use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Session\PhpSession;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Session\RetrieveSession;
@@ -18,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class LoginUser implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly PhpSession $adapter
+        private readonly AuthenticationInterface $adapter
     ) {
     }
 
@@ -57,15 +58,14 @@ class LoginUser implements RequestHandlerInterface
         // the auth adapter so we remove the session prior
         // to auth attempt
         $session->unset(UserInterface::class);
-
         // Login was successful
-        if ($this->adapter->authenticate($request)) {
-            return new JsonResponse(
-                [
-                    'success' => true,
-                    'redirect' => $redirect,
-                ]
-            );
+        if ($user = $this->adapter->authenticate($request)) {
+            return new JsonResponse([
+                'username' => $user->getIdentity(),
+                'permissions' => $user->getRoles(),
+                'details' => $user->getDetails(),
+                'admin' => $user->getDetail('admin'),
+            ]);
         }
 
         // Login failed

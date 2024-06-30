@@ -19,7 +19,7 @@ use MezzioSecurity\Repository\UserRepository;
 
 #[Entity(repositoryClass: UserRepository::class, readOnly: false)]
 #[HasLifecycleCallbacks]
-#[Table(name: "user")]
+#[Table(name: "`user`")]
 #[Index(columns: ["user_firstname", "user_lastname"], name: "user_name_idx")]
 class User implements \JsonSerializable, UserInterface
 {
