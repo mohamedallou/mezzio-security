@@ -66,7 +66,7 @@ class CustomSessionPersistence implements SessionPersistenceInterface, Initializ
     /**
      * @internal
      *
-     * @param SessionConfig $sessionConfig
+     * @param array $sessionConfig
      */
     final public static function fromConfigArray(array $sessionConfig = []): self
     {
@@ -173,14 +173,12 @@ class CustomSessionPersistence implements SessionPersistenceInterface, Initializ
     private function getSessionCookieValueFromRequest(ServerRequestInterface $request): string
     {
         $authHeader = $request->getHeaderLine('Authorization');
-        if ($authHeader === '') {
-            return $handler->handle($request->withAttribute(static::AUTHENTICATED_USER, null));
-        }
+        if ($authHeader !== '') {
+            $token = explode(' ', $authHeader)[1] ?? null;
 
-        $token = explode(' ', $authHeader)[1] ?? null;
-
-        if ($token !== null) {
-            return $token;
+            if ($token !== null) {
+                return $token;
+            }
         }
 
         if ('' === $request->getHeaderLine('Cookie')) {
@@ -194,7 +192,7 @@ class CustomSessionPersistence implements SessionPersistenceInterface, Initializ
 
     private function generateRandomHash(): string
     {
-        return hash('sha256', microtime(true) . uniqid('', true) . rand());
+        return hash('sha512', microtime(true) . uniqid('', true) . rand());
     }
 
     private function regenerateSession(): string

@@ -16,6 +16,7 @@ class SecureSession
         ini_set('session.sid_length', '255');
         ini_set('session.sid_bits_per_character', '6');
         ini_set('session.name', 'sessiontoken');
+        ini_set('session.use_strict_mode', true);
     }
 
     static public function InitSessionDatabaseHandler(ContainerInterface $container): void

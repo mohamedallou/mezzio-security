@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Index(columns: ["access"], name: "access_idx")]
 class Session
 {
-    #[Id, Column(name: "id", type: "string", length: 255, nullable: false)]
+    #[Id, Column(name: "id", type: "string", length: 400, nullable: false)]
     private string $id;
 
     #[Column(name: "data", type: Types::TEXT, nullable: false)]
