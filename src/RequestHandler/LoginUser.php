@@ -64,6 +64,7 @@ class LoginUser implements RequestHandlerInterface
                 'username' => $user->getIdentity(),
                 'permissions' => $user->getRoles(),
                 'details' => $user->getDetails(),
+                'token' => $user->getDetail('token') ?? '',
                 'admin' => $user->getDetail('admin'),
             ]);
         }

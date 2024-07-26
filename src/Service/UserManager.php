@@ -123,6 +123,7 @@ class UserManager implements MezzioUserRepoInterface
 
     public function authenticate(string $credential, ?string $password = null): ?UserInterface
     {
+        //TODO: check  active state
         /** @var UserRepositoryInterface $userRepo */
         $userRepo = $this->entityManager->getRepository(User::class);
         // try username
@@ -149,21 +150,6 @@ class UserManager implements MezzioUserRepoInterface
         }
 
         return new DefaultUser($user->getUsername(), $permissions, $user->getDetails());
-    }
-
-    public function activateUserWithDoubleOptIn(string $doiToken): void
-    {
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->entityManager->getRepository(User::class);
-        $userEntity = $userRepository->findOneBy(['userDoiHash' => $doiToken]);
-
-        if ($userEntity === null) {
-            throw new UserNotFoundException('User with the given token was not found');
-        }
-
-        $userEntity->activate();
-        $this->entityManager->persist($userEntity);
-        $this->entityManager->flush();
     }
 
     public function deleteUser(int $userId): void

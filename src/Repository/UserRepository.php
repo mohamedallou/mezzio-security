@@ -23,7 +23,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function activateUserByToken(string $doiToken): void
     {
         /** @var UserRepository $userRepository */
-        $userRepository = $this->_em->getRepository(User::class);
+        $userRepository = $this->getEntityManager()->getRepository(User::class);
         $userEntity = $userRepository->findOneBy(['userDoiHash' => $doiToken]);
         if ($userEntity === null) {
             return;

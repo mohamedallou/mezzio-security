@@ -14,8 +14,11 @@ use Mezzio\Authentication\UserRepositoryInterface;
 use Mezzio\Authorization\AuthorizationInterface;
 use Mezzio\Session\Ext\PhpSessionPersistence;
 use Mezzio\Session\SessionPersistenceInterface;
+use MezzioSecurity\Command\GenerateUser;
 use MezzioSecurity\Middleware\BasicAuthenticationMiddleware;
 use MezzioSecurity\Middleware\Factory\BasicAuthenticationMiddlewareFactory;
+use MezzioSecurity\Middleware\Factory\JwtAuthenticationMiddlewareFactory;
+use MezzioSecurity\Middleware\JwtAuthenticationMiddleware;
 use MezzioSecurity\RequestHandler\DeleteUser;
 use MezzioSecurity\RequestHandler\Factory\LoginUserFactory;
 use MezzioSecurity\RequestHandler\Factory\View\LoginFactory;
@@ -59,6 +62,7 @@ class ConfigProvider
             ],
             'token_ttl' => 300,
             'commands' => [
+                GenerateUser::class,
             ],
             'authentication' => [
                 'redirect' => '/login',
@@ -106,6 +110,7 @@ class ConfigProvider
                 ArraySerializableHydrator::class => InvokableFactory::class,
                 Login::class => LoginFactory::class,
                 BasicAuthenticationMiddleware::class => BasicAuthenticationMiddlewareFactory::class,
+                JwtAuthenticationMiddleware::class => JwtAuthenticationMiddlewareFactory::class,
                 LoginUser::class => LoginUserFactory::class,
                 AuthorizationService::class => function (ContainerInterface $container): AuthorizationService {
                     return new AuthorizationService($container);
